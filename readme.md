@@ -1,4 +1,4 @@
-## Deploying Microservice Application Gke cluster
+## Deploying Microservice Application On Gke cluster
 
 ### Tools 
 + Terraform
