@@ -45,7 +45,7 @@ jobs:
           cd Deployment/Deployment/
           PREV_TAG_NUMBER=$(cat previous-tag-frontend.txt)
           NEW_TAG_NUMBER=$((PREV_TAG_NUMBER + 1)) 
-          cd ../../App/backend-end
+          cd ../../App/back-end
           docker build -t ${{vars.DOCKER_USERNAME}}/${{vars.IMAGE_NAME}}:${NEW_TAG_NUMBER} .
           
 
