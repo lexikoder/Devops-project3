@@ -25,7 +25,12 @@ jobs:
 
       # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: |
+         cd ../../App/backend-end
+         npm install
+      
+      - name: testing
+        run: echo testing......
 
       # Step 4: Log in to DockerHub
       - name: Log in to DockerHub
@@ -40,7 +45,7 @@ jobs:
           cd Deployment/Deployment/
           PREV_TAG_NUMBER=$(cat previous-tag-frontend.txt)
           NEW_TAG_NUMBER=$((PREV_TAG_NUMBER + 1)) 
-          cd ../../App/front-end
+          cd ../../App/backend-end
           docker build -t ${secrets.REGISTRY}/${secrets.IMAGE_NAME}:${NEW_TAG_NUMBER} .
           
 

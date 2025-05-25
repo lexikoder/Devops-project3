@@ -25,7 +25,12 @@ jobs:
 
       # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: |
+         cd ../../App/front-end
+         npm install
+
+      - name: testing
+        run: echo testing......
 
       # Step 4: Log in to DockerHub
       - name: Log in to DockerHub

@@ -2,19 +2,19 @@
 resource "google_service_account" "my-service-account" {
   account_id   = "node-pools-service-account" 
 }
-# locals {
-#   role = [
-# {role    = "roles/iam.serviceAccountUser"}, 
-# {role    = "roles/compute.instanceAdmin"}, 
-# {role    = "roles/container.nodeServiceAccount"}]
+locals {
+  role = [
+{role    = "roles/iam.serviceAccountUser"}, 
+{role    = "roles/compute.instanceAdmin"}, 
+{role    = "roles/container.nodeServiceAccount"}]
 
-# }
-# resource "google_project_iam_member" "sa_service_account_user" {
-#      for_each = { for idx, myaddon in local.role : idx => myaddon }
-#      project = var.project 
-#      role    = each.value.role
-#      member  = "serviceAccount:${google_service_account.my-service-account.email}"
-# }
+}
+resource "google_project_iam_member" "sa_service_account_user" {
+     for_each = { for idx, myaddon in local.role : idx => myaddon }
+     project = var.project 
+     role    = each.value.role
+     member  = "serviceAccount:${google_service_account.my-service-account.email}"
+}
 
 
 resource "google_container_cluster" "my-cluster" {
