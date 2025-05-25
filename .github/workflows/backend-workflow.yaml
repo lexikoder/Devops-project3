@@ -36,7 +36,7 @@ jobs:
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       # Step 5: Build the Docker image
@@ -46,39 +46,39 @@ jobs:
           PREV_TAG_NUMBER=$(cat previous-tag-frontend.txt)
           NEW_TAG_NUMBER=$((PREV_TAG_NUMBER + 1)) 
           cd ../../App/backend-end
-          docker build -t ${secrets.REGISTRY}/${secrets.IMAGE_NAME}:${NEW_TAG_NUMBER} .
+          docker build -t ${{vars.DOCKER_USERNAME}}/${{vars.IMAGE_NAME}}:${NEW_TAG_NUMBER} .
           
 
       # Step 6: Push the Docker image
       - name: Push Docker image
-        run: docker push ${secrets.REGISTRY}/${secrets.IMAGE_NAME}:${NEW_TAG_NUMBER}
+        run: docker push ${{vars.DOCKER_USERNAME}}/${{vars.IMAGE_NAME}}:${NEW_TAG_NUMBER}
 
       # Step 7: Update tags and push changes
-      - name: Update image tags in values.yaml and push
-        env:
-          GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GIT_REPO_NAME: ${{ github.repository }}
-          Git_Email: ${{ secrets.GITHUB_EMAIL}}
-          Git_Name: ${{ secrets.GITHUB_Name}}
-          IMAGE_NAME: ${{ secrets.IMAGE_NAME }} # Replace with your actual image name
-        run: |
-          cd Deployment/Deployment/
-          PREV_TAG_NUMBER=$(cat previous-tag-frontend.txt)
-          NEW_TAG_NUMBER=$((PREV_TAG_NUMBER + 1))
+      # - name: Update image tags in values.yaml and push
+      #   env:
+      #     GIT_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     GIT_REPO_NAME: ${{ github.repository }}
+      #     Git_Email: ${{ secrets.GITHUB_EMAIL}}
+      #     Git_Name: ${{ secrets.GITHUB_Name}}
+      #     IMAGE_NAME: ${{ secrets.IMAGE_NAME }} # Replace with your actual image name
+      #   run: |
+      #     cd Deployment/Deployment/
+      #     PREV_TAG_NUMBER=$(cat previous-tag-frontend.txt)
+      #     NEW_TAG_NUMBER=$((PREV_TAG_NUMBER + 1))
           
-          # Configure git
-          git config --global user.email ${Git_Email}
-          git config --global user.name  ${Git_Name}
+      #     # Configure git
+      #     git config --global user.email ${Git_Email}
+      #     git config --global user.name  ${Git_Name}
       
-          # Update values.yaml and previous-tag-frontend.txt
-          sed -i "s/lexikhoder\\/${IMAGE_NAME}:${PREV_TAG_NUMBER}/lexikhoder\\/${IMAGE_NAME}:${NEW_TAG_NUMBER}/g" values.yaml
-          sed -i "s/${PREV_TAG_NUMBER}/${NEW_TAG_NUMBER}/g" previous-tag-frontend.txt
+      #     # Update values.yaml and previous-tag-frontend.txt
+      #     sed -i "s/lexikhoder\\/${IMAGE_NAME}:${PREV_TAG_NUMBER}/lexikhoder\\/${IMAGE_NAME}:${NEW_TAG_NUMBER}/g" values.yaml
+      #     sed -i "s/${PREV_TAG_NUMBER}/${NEW_TAG_NUMBER}/g" previous-tag-frontend.txt
           
-          # Pull latest changes, commit, and push updates
-          cd ..
-          git pull origin master
-          git branch --set-upstream-to=origin/master master
-          git add .
-          git commit -m "Updated tag to ${NEW_TAG_NUMBER}"
-          git push https://${GIT_USER_NAME}:${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git
+      #     # Pull latest changes, commit, and push updates
+      #     cd ..
+      #     git pull origin master
+      #     git branch --set-upstream-to=origin/master master
+      #     git add .
+      #     git commit -m "Updated tag to ${NEW_TAG_NUMBER}"
+      #     git push https://${GIT_USER_NAME}:${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git
