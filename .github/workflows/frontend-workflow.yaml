@@ -3,10 +3,10 @@ name: Build, Push Docker Image, and Update Tag
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-push:
@@ -38,7 +38,7 @@ jobs:
       - name: Build Docker image
         run: |
           cd Deployment/Deployment/
-          PREV_TAG_NUMBER=$(cat previous-tag.txt)
+          PREV_TAG_NUMBER=$(cat previous-tag-frontend.txt)
           NEW_TAG_NUMBER=$((PREV_TAG_NUMBER + 1)) 
           cd ../../App/front-end
           docker build -t ${secrets.REGISTRY}/${secrets.IMAGE_NAME}:${NEW_TAG_NUMBER} .
@@ -59,16 +59,16 @@ jobs:
           IMAGE_NAME: ${{ secrets.IMAGE_NAME }} # Replace with your actual image name
         run: |
           cd Deployment/Deployment/
-          PREV_TAG_NUMBER=$(cat previous-tag.txt)
+          PREV_TAG_NUMBER=$(cat previous-tag-frontend.txt)
           NEW_TAG_NUMBER=$((PREV_TAG_NUMBER + 1))
           
           # Configure git
           git config --global user.email ${Git_Email}
           git config --global user.name  ${Git_Name}
       
-          # Update values.yaml and previous-tag.txt
+          # Update values.yaml and previous-tag-frontend.txt
           sed -i "s/lexikhoder\\/${IMAGE_NAME}:${PREV_TAG_NUMBER}/lexikhoder\\/${IMAGE_NAME}:${NEW_TAG_NUMBER}/g" values.yaml
-          sed -i "s/${PREV_TAG_NUMBER}/${NEW_TAG_NUMBER}/g" previous-tag.txt
+          sed -i "s/${PREV_TAG_NUMBER}/${NEW_TAG_NUMBER}/g" previous-tag-frontend.txt
           
           # Pull latest changes, commit, and push updates
           cd ..
