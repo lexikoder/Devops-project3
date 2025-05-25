@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.frontendSvcName}}
+  namespace: {{.Values.environment}}
+  labels:
+    env: {{.Values.environment}}
+spec:
+  selector:
+    app: {{.Values.frontendPodLabel}} 
+  type: ClusterIP
+  ports:
+  - port: {{.Values.frontendClusteripPort}} # this can be any port it communicate with all similar pods internally
+    targetPort: {{.Values.frontendContainerPort}} # this port should match the container port in the pod
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.backendSvcName}}
+  namespace: {{.Values.environment}}
+  labels:
+    env: {{.Values.environment}}
+spec:
+  selector:
+    app: {{.Values.backendPodLabel}}
+  type: ClusterIP
+  ports:
+  - port: {{.Values.backendClusteripPort}} # this can be any port it communicate with all similar pods internally
+    targetPort: {{.Values.backendContainerPort}} # this port should match the container port in the pod

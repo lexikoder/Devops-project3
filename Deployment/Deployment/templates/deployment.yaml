@@ -1,0 +1,68 @@
+# sample deployment yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.frontendDeploymentName}} 
+  namespace: {{.Values.environment}} 
+  labels:
+    env: {{.Values.environment}}
+    type: {{.Values.frontendDeploymentName}}
+spec:
+  replicas: {{.Values.frontendPodsReplicas}}
+  selector:
+    matchLabels:
+      app: {{.Values.frontendPodLabel}} 
+  template:
+    metadata:
+      name: {{.Values.frontendPodName}}
+      labels:
+        app: {{.Values.frontendPodLabel}}   
+    spec:
+      containers:
+      - name: {{.Values.frontendContainerName}}
+        image: {{.Values.frontendImage}}
+        ports:
+        - containerPort: {{.Values.frontendContainerPort}} #this is the pod port that the container listens to
+        resources:
+          requests:
+            cpu: {{.Values.frontendRequests.cpu}}
+            memory: {{.Values.frontendRequests.memory}}
+          limits:
+            cpu: {{.Values.frontendLimits.cpu}}
+            memory: {{.Values.frontendLimits.memory}}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{.Values.backendDeploymentName}} 
+  namespace: {{.Values.environment}}
+  labels:
+    env: {{.Values.environment}}
+    type: {{.Values.backendDeploymentName}} 
+spec:
+   replicas: {{.Values.backendPodsReplicas}}
+   selector:
+    matchLabels:
+      app: {{.Values.backendPodLabel}} 
+   template:
+    metadata:
+      name: {{.Values.backendPodName}}
+      labels:
+        app: {{.Values.backendPodLabel}}   
+    spec:
+      containers:
+      - name: {{.Values.backendContainerName}}
+        image: {{.Values.backendImage}}
+        ports:
+        - containerPort: {{.Values.backendContainerPort}} #this is the pod port that the container listens to
+        resources:
+          requests:
+            cpu: {{.Values.backendRequests.cpu}}
+            memory: {{.Values.backendRequests.memory}}
+          limits:
+            cpu: {{.Values.backendLimits.cpu}}
+            memory: {{.Values.backendLimits.memory}}
+   
+
