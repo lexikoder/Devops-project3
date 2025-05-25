@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/lexikoder/Devops-project3.git
+    repoURL: https://github.com/lexikoder/Gke-Gce-Gcs-Vpc-Terraform-Gitops-Project.git
     targetRevision: HEAD
     path: Deployment/Deployment # Update this to the path of your Helm chart within the repository
     helm:
