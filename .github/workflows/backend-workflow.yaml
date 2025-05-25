@@ -26,7 +26,7 @@ jobs:
       # Step 3: Install dependencies
       - name: Install dependencies
         run: |
-         cd App/backend-end
+         cd App/back-end
          npm install
       
       - name: testing
