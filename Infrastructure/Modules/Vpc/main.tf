@@ -24,7 +24,7 @@ resource "google_compute_subnetwork" "public-subnets" {
 }
 
 resource "google_compute_firewall" "firewall-rules" {
-  for_each = { for idx, subnet in var.vpc-firewall-rules : idx => subnet }
+  for_each = { for idx, firewall in var.vpc-firewall-rules : idx => firewall}
   name        = each.value.name
   network     = google_compute_network.vpc_network.id
   description = "Creates firewall rule targeting tagged instances"

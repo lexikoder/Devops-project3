@@ -73,3 +73,23 @@ node-pools-values = {
     ]
   
 }
+
+# gce values
+gce-sa-account_id = "my-custom-sa"
+gce-vi-name = "my-confidential-instance"
+gce-vi-zone = "us-west1-a"
+gce-machine_type = "e2-micro"
+gce-vi-image = "projects/ubuntu-os-cloud/global/images/family/ubuntu-2204-lts"
+gce-vi-size = 10
+gce-vi-type = "pd-balanced"
+gce-vi-firewall-tags = ["my-instance"]
+
+# cloud storage values
+bucket-name = "my-terraform-state-storage"
+bucket-location = "us-west1"
+bucket-force-destroy = true
+storage-class = "STANDARD"
+bucket-public_access_prevention = "enforced"
+bucket-uniform_bucket_level_access = true
+bucket-versioning = true
+bucket-softdelete-policy = 0
